@@ -20,13 +20,12 @@ def receta():
         if hectareas <= 0:
             return jsonify({"fertilizante": msg, "cantidad": msg, "costo": msg})
 
-        # Lógica de precios por cultivo (incluimos variantes por la 'ñ' o acentos)
         if cultivo in ["maíz", "maiz"]:
             precio = 300
         elif cultivo in ["caña", "cana"]:
             precio = 250
         else:
-            # Si el cultivo no coincide, devolvemos el mensaje solicitado
+
             return jsonify({"fertilizante": msg, "cantidad": msg, "costo": msg})
 
         cantidad = hectareas * 50
