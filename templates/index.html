@@ -3,11 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/static/style.css">
-    <title>Mi Hackathon</title>
+    <title>AgroReceta Puebla</title>
 </head>
 <body>
-    <h1>¡Hola Hackathon Cambio1 !</h1>
-    <p> Equipo Delphi </p>
+    <h1>AgroReceta 🌽</h1>
+    <select id="cultivo">
+        <option value="maiz">Maíz</option>
+        <option value="cana">Caña de azúcar</option>
+    </select>
+    <input type="number" id="hectareas" placeholder="Hectáreas"/>
+    <button id="btn">Generar receta</button>
+    <div id="resultado"></div>
     <script src="/static/script.js"></script>
 </body>
 </html>
