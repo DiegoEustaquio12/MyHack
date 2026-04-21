@@ -1,7 +1,3 @@
-console.log("JS listo");
-console.log('Equipo Listo')
-console.log("prueba1")
-
 document.getElementById("btn").addEventListener("click", async () => {
     const cultivo = document.getElementById("cultivo").value;
     const hectareas = document.getElementById("hectareas").value;
@@ -19,3 +15,4 @@ document.getElementById("btn").addEventListener("click", async () => {
         <p>💰 Costo estimado: ${datos.costo}</p>
     `;
 });
+
