@@ -9,14 +9,37 @@ def index():
 @app.route("/receta", methods=["POST"])
 def receta():
     datos = request.get_json()
-    cultivo = datos.get("cultivo")
-    hectareas = datos.get("hectareas")
+    try:
+        hectareas = float(datos.get("hectareas", 0))
+        # Limpiamos el texto del cultivo
+        cultivo = str(datos.get("cultivo", "")).lower().strip()
+        
+        msg = "No se pueden calcular valores negativos"
 
-    return jsonify({
-        "fertilizante": "Urea 46%",
-        "cantidad": f"{float(hectareas) * 50} kg",
-        "costo": f"${float(hectareas) * 300} MXN"
-    })
+        # Validación de números
+        if hectareas <= 0:
+            return jsonify({"fertilizante": msg, "cantidad": msg, "costo": msg})
+
+        if cultivo in ["maíz", "maiz"]:
+            precio = 300
+        elif cultivo in ["caña", "cana"]:
+            precio = 250
+        else:
+
+            return jsonify({"fertilizante": msg, "cantidad": msg, "costo": msg})
+
+        cantidad = hectareas * 50
+        costo = hectareas * precio
+
+        return jsonify({
+            "fertilizante": "Urea 46%",
+            "cantidad": f"{cantidad} kg",
+            "costo": f"${costo} MXN"
+        })
+
+    except (ValueError, TypeError):
+        msg = "No se pueden calcular valores negativos"
+        return jsonify({"fertilizante": msg, "cantidad": msg, "costo": msg})
 
 if __name__ == "__main__":
     app.run(debug=True)
