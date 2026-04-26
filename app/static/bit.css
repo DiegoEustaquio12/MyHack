@@ -230,3 +230,161 @@
     .nav-label { font-size:10px; font-weight:600; }
 
     .main { padding-top: var(--top-h); padding-bottom: calc(var(--nav-h) + 20px); }
+
+    /* ── Calendario de riegos ────────────────────────────── */
+    .calendario-wrap {
+      background: #fff;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.06);
+    }
+
+    .cal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .cal-mes {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      color: #1a1a1a;
+      text-transform: capitalize;
+    }
+
+    .cal-nav {
+      background: none;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-size: 18px;
+      color: #555;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition: background .15s, border-color .15s;
+    }
+
+    .cal-nav:hover {
+      background: #f0f6ff;
+      border-color: #4a90e2;
+      color: #4a90e2;
+    }
+
+    /* Mes actual: ocultar botón siguiente */
+    .cal-nav.oculto {
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .cal-dias-semana {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      margin-bottom: 6px;
+    }
+
+    .cal-dias-semana span {
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: #aaa;
+      padding: 4px 0;
+      letter-spacing: .04em;
+    }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 3px;
+    }
+
+    .cal-dia {
+      aspect-ratio: 1;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 500;
+      color: #444;
+      cursor: default;
+      transition: transform .1s;
+      position: relative;
+    }
+
+    .cal-dia.vacio {
+      background: transparent;
+    }
+
+    .cal-dia.normal {
+      background: #f7f7f7;
+      color: #555;
+    }
+
+    /* Día con riego */
+    .cal-dia.regado {
+      background: #dbeeff;
+      color: #1565c0;
+      font-weight: 700;
+    }
+
+    .cal-dia.regado::after {
+      content: '';
+      position: absolute;
+      bottom: 3px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #4a90e2;
+    }
+
+    /* Hoy */
+    .cal-dia.hoy {
+      background: #1a1a1a;
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .cal-dia.hoy.regado {
+      background: #1565c0;
+      color: #fff;
+    }
+
+    /* Días futuros */
+    .cal-dia.futuro {
+      background: transparent;
+      color: #ccc;
+    }
+
+    /* Tooltip al hacer tap en móvil */
+    .cal-dia:not(.vacio):not(.futuro):active {
+      transform: scale(.88);
+    }
+
+    .cal-leyenda {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+      font-size: 12px;
+      color: #888;
+      flex-wrap: wrap;
+    }
+
+    .cal-leyenda-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .cal-leyenda-dot.azul  { background: #4a90e2; }
+    .cal-leyenda-dot.hoy   { background: #1a1a1a; }

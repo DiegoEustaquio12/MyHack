@@ -44,6 +44,25 @@
       <div class="timeline-track" id="timeline-track"></div>
     </div>
 
+      <!-- CALENDARIO DE RIEGOS -->
+    <div class="sec-title" style="margin-top:16px;">💧 Calendario de riegos</div>
+    <div class="calendario-wrap" id="calendario-wrap">
+      <div class="cal-header">
+        <button class="cal-nav" id="cal-prev" onclick="calMover(-1)">‹</button>
+        <span class="cal-mes" id="cal-mes-label"></span>
+        <button class="cal-nav" id="cal-next" onclick="calMover(1)">›</button>
+      </div>
+      <div class="cal-dias-semana">
+        <span>Lu</span><span>Ma</span><span>Mi</span>
+        <span>Ju</span><span>Vi</span><span>Sa</span><span>Do</span>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+      <div class="cal-leyenda">
+        <span class="cal-leyenda-dot azul"></span><span>Día con riego</span>
+        <span class="cal-leyenda-dot hoy"></span><span>Hoy</span>
+      </div>
+    </div>
+
     <!-- DATOS DEL DÍA -->
     <div class="datos-grid" id="datos-grid">
       <!-- se llena dinámicamente -->

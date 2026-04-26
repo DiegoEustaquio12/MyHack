@@ -270,3 +270,137 @@
     }
 
     init();
+
+    // ── CALENDARIO DE RIEGOS ─────────────────────────────────────
+
+let calOffset = 0   // 0 = mes actual, -1 = mes anterior, etc.
+
+/**
+ * Extrae del localStorage todos los días en que hubo un riego.
+ * Devuelve un Set de strings con formato 'YYYY-MM-DD'.
+ */
+function obtenerDiasRegados() {
+  const eventos = JSON.parse(localStorage.getItem('eventos') || '[]')
+  const diasRegados = new Set()
+
+  eventos.forEach(evt => {
+    // Solo registros de tipo riego
+    if (evt.tipo === 'riego' && evt.fecha) {
+      // Normalizar: guardar solo la parte YYYY-MM-DD
+      const fecha = evt.fecha.split('T')[0]
+      diasRegados.add(fecha)
+    }
+  })
+
+  return diasRegados
+}
+
+/**
+ * Construye y renderiza el calendario del mes indicado por calOffset.
+ * calOffset = 0 → mes actual, -1 → mes anterior, etc.
+ */
+function renderCalendario() {
+  const hoy      = new Date()
+  const objetivo = new Date(hoy.getFullYear(), hoy.getMonth() + calOffset, 1)
+  const anio     = objetivo.getFullYear()
+  const mes      = objetivo.getMonth()   // 0–11
+
+  // Etiqueta del mes
+  const label = objetivo.toLocaleDateString('es-MX', { month: 'long', year: 'numeric' })
+  document.getElementById('cal-mes-label').textContent = label
+
+  // Ocultar botón "siguiente" si ya estamos en el mes actual
+  const btnNext = document.getElementById('cal-next')
+  btnNext.classList.toggle('oculto', calOffset >= 0)
+
+  // Días regados
+  const diasRegados = obtenerDiasRegados()
+
+  // Día de la semana en que empieza el mes (0=Dom…6=Sáb → ajustar a Lun=0)
+  let primerDia = new Date(anio, mes, 1).getDay()
+  primerDia = (primerDia + 6) % 7   // convierte Dom=0 a Dom=6
+
+  // Días totales del mes
+  const totalDias = new Date(anio, mes + 1, 0).getDate()
+
+  const grid = document.getElementById('cal-grid')
+  grid.innerHTML = ''
+
+  // Celdas vacías iniciales
+  for (let i = 0; i < primerDia; i++) {
+    const vacio = document.createElement('div')
+    vacio.className = 'cal-dia vacio'
+    grid.appendChild(vacio)
+  }
+
+  // Celdas de días
+  for (let d = 1; d <= totalDias; d++) {
+    const celda  = document.createElement('div')
+    const fechaStr = `${anio}-${String(mes + 1).padStart(2,'0')}-${String(d).padStart(2,'0')}`
+    const esteD  = new Date(anio, mes, d)
+    const esHoy  = (
+      d === hoy.getDate() &&
+      mes === hoy.getMonth() &&
+      anio === hoy.getFullYear()
+    )
+    const esFuturo = esteD > hoy && !esHoy
+    const esRegado = diasRegados.has(fechaStr)
+
+    let clases = 'cal-dia'
+    if (esFuturo)      clases += ' futuro'
+    else if (esHoy)    clases += esRegado ? ' hoy regado' : ' hoy'
+    else if (esRegado) clases += ' regado'
+    else               clases += ' normal'
+
+    celda.className = clases
+    celda.textContent = d
+
+    // Tooltip accesible en móvil
+    if (esRegado && !esFuturo) {
+      celda.title = `Riego registrado el ${fechaStr}`
+    }
+
+    grid.appendChild(celda)
+  }
+}
+
+/** Navegar entre meses */
+function calMover(delta) {
+  calOffset = Math.min(0, calOffset + delta)   // no avanzar más allá del mes actual
+  renderCalendario()
+}
+
+// ── Integración con guardarEvento() ─────────────────────────
+// Si ya tienes esta función, solo agrega renderCalendario()
+// al final de ella. Si no la tienes, aquí está la versión completa:
+
+function guardarEvento() {
+  const titulo = document.getElementById('evt-titulo').value.trim()
+  if (!titulo) return
+
+  const tipo = document.querySelector('.tipo-btn.selected')?.dataset.tipo || 'nota'
+  const desc = document.getElementById('evt-desc').value.trim()
+  const ahora = new Date().toISOString()
+
+  const evento = {
+    id:     Date.now(),
+    tipo,
+    titulo,
+    desc,
+    fecha:  ahora,          // ← la fecha ISO se usa para el calendario
+  }
+
+  const lista = JSON.parse(localStorage.getItem('eventos') || '[]')
+  lista.unshift(evento)
+  localStorage.setItem('eventos', JSON.stringify(lista))
+
+  cerrarModal()
+  cargarEventos()          // refresca la lista de eventos
+  renderCalendario()       // ← actualiza el calendario automáticamente
+}
+
+// ── Inicialización ───────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // ... tu código de init existente ...
+  renderCalendario()   // ← agregar esta línea al init
+})
