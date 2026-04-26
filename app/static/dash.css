@@ -643,3 +643,16 @@ img {
   object-fit: cover;      /* ← esto es clave */
   object-position: center;
 }
+
+/* Estado mientras carga el clima */
+.riesgo-cargando { border-left: 4px solid #d1d1d1 !important; opacity: 0.8; }
+
+/* Colores dinámicos para el semáforo del Dashboard */
+.cultivo-icon-wrap.bajo  { background: rgba(82, 183, 136, 0.15); }
+.cultivo-icon-wrap.medio { background: rgba(244, 162, 97, 0.15); }
+.cultivo-icon-wrap.alto  { background: rgba(230, 57, 70, 0.15); }
+
+/* Asegurar que el borde izquierdo cambie con el estado */
+.cultivo-card.riesgo-bajo { border-left: 4px solid var(--riesgo-bajo); }
+.cultivo-card.riesgo-medio { border-left: 4px solid var(--riesgo-medio); }
+.cultivo-card.riesgo-alto { border-left: 4px solid var(--riesgo-alto); }
