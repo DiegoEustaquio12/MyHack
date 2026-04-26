@@ -12,30 +12,7 @@
     }
 
     // ── MODAL ──
-   function abrirModal() {
-      document.getElementById('modal').classList.add('open');
-    }
-
-    function cerrarModal() {
-      document.getElementById('modal').classList.remove('open');
-    }
-
-    function cerrarModalFuera(e) {
-      if (e.target === document.getElementById('modal')) cerrarModal();
-    }
-
-    // Iconos por tipo de cultivo
-    const iconos = {
-      maiz: '🌽', chile: '🌶️', frijol: '🫘', aguacate: '🥑',
-      nopal: '🌵', amaranto: '🌾', jitomate: '🍅', papa: '🥔'
-    };
-
-    // ── AGREGAR CULTIVO ──
-    function guardarCultivo() {
-      const tipo   = document.getElementById('tipo-cultivo').value;
-      const nombre = document.getElementById('nombre-parcela').value.trim();
-      const muni   = document.getElementById('municipio').value.trim();
-
+  
       if (!tipo || !nombre) {
         alert('Por favor llena el tipo de cultivo y el nombre de la parcela.');
         return;
@@ -69,4 +46,4 @@
       document.getElementById('nombre-parcela').value = '';
       document.getElementById('municipio').value = '';
       cerrarModal();
-    }
+    
