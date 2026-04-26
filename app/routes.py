@@ -164,6 +164,33 @@ def login():
         "error": "Usuario o contraseña incorrectos"
     }), 401
 
+# ══════════════════════════════════════════════════════════════
+# REGISTRO
+# ══════════════════════════════════════════════════════════════
+
+@main.route("/registrar", methods=["POST"])
+def registrar():
+    """Registra un nuevo usuario en el diccionario en memoria."""
+    data = request.get_json(silent=True) or {}
+    nombre = data.get("nombre", "").strip()
+    usuario = data.get("usuario", "").strip()
+    password = data.get("contrasena", "").strip()
+
+    # Validar que los datos existan
+    if not usuario or not password or not nombre:
+        return jsonify({"ok": False, "error": "Faltan datos obligatorios"}), 400
+
+    # Validar si el usuario ya existe en el diccionario
+    if usuario in USUARIOS:
+        return jsonify({"ok": False, "error": "Este correo ya está registrado"}), 400
+
+    # Guardar en el diccionario importado
+    # Nota: Al ser un diccionario en memoria, los usuarios creados se perderán 
+    # si reinicias el servidor Flask. Para producción, usarías una Base de Datos.
+    USUARIOS[usuario] = password
+    
+    return jsonify({"ok": True})
+
 
 # ========================
 # LOGOUT
