@@ -83,6 +83,8 @@ function registrar() {
     .catch(error => console.error('Error en el registro:', error));
 }
 
+
+
 // Cerrar haciendo clic afuera (aplica para ambos)
 window.onclick = function(event) {
   if (event.target == modalLogin) {

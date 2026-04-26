@@ -13,17 +13,20 @@
 
   <!-- TOP BAR -->
   <div class="topbar">
-    <div class="topbar-left">
-      <div class="avatar">JL</div>
-      <span class="topbar-title">AgroClimb</span>
-    </div>
+  <div class="topbar-left">
+    <div class="avatar">PL</div>
+    
+    <a href="./index.html" class="topbar-logo-link" title="Regresar al inicio" style="display: flex; align-items: center; text-decoration: none; color: inherit;">
+      <img src="../static/img/logo_hoja.png" alt="Logo ValorAgro" style="height: 35px; width: auto; margin-right: 10px;">
+      <span class="topbar-title">ValorAgro</span>
+    </a>
+  </div>
     <div class="topbar-right">
       <button class="icon-btn" title="Buscar">🔍</button>
       <button class="icon-btn" title="Notificaciones">🔔</button>
       <button onclick="cerrarSesion()">Cerrar sesión 🚪</button>
     </div>
   </div>
-
   <!-- MAIN CONTENT -->
   <main class="main">
 
@@ -311,7 +314,12 @@
   <script>
   function cerrarSesion() {
     window.location.href = "/";
-}
-</script>
+  }
+
+  function irAlInicio() {
+    
+    window.location.href = "/"; 
+  }
+  </script>
 </body>
 </html>
