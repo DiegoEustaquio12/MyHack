@@ -16,6 +16,22 @@ app = create_app()
 
 CULTIVOS = [
     {
+    "nombre": "Caña de Azúcar",
+    "tipo":   "cana",
+    "siembra_inicio":       "2025-11-01",
+    "cosecha_fin":          "2026-12-31",
+    "dias_siembra_cosecha": 420,
+    "idoneo": {
+        "temp_min_c":       18.0,
+        "temp_optima_c":    30.0,
+        "temp_max_c":       38.0,
+        "riego_frecuencia": "Cada 15 días",
+        "ph_min":           5.5,
+        "ph_max":           7.5,
+        "humedad_relativa": 75.0,
+    }
+},
+    {
         "nombre": "Maíz",
         "tipo":   "maiz",
         "siembra_inicio":       "2025-04-15",

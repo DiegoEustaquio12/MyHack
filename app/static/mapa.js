@@ -144,7 +144,7 @@ function cerrarModalFuera(e) {
 // ── Iconos por tipo de cultivo ──
 const _iconosCultivo = {
   maiz:'🌽', chile:'🌶️', frijol:'🫘', aguacate:'🥑',
-  nopal:'🌵', amaranto:'🌾', jitomate:'🍅', papa:'🥔'
+  nopal:'🌵', amaranto:'🌾', jitomate:'🍅', papa:'🥔', cana:'🌿' 
 };
 
 // ── Guardar cultivo → Flask → BD → redirigir a bitácora ──────────────────────
