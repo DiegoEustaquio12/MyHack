@@ -84,3 +84,105 @@
       .hero-content { left: 24px; right: 24px; bottom: 40px; }
       .stats-bar, .about, .cards-section, footer { padding-left: 24px; padding-right: 24px; }
     }
+
+    /* 
+   (INICIAR SESIÓN)
+    */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 25, 10, 0.75); /* Un tono oscuro ligeramente verdoso */
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px); /* Efecto de desenfoque moderno en el fondo */
+}
+
+.modal-content {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px 32px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.btn-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  color: #6b7280;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.btn-close:hover {
+  color: #111827;
+}
+
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  color: #1f2937;
+  font-size: 28px;
+  margin-top: 0;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.input-group label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.input-group input {
+  font-family: 'DM Sans', sans-serif;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+  border-color: #22c55e; 
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.2);
+}
+
+.btn-submit {
+  font-family: 'DM Sans', sans-serif;
+  background-color: #166534; 
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit:hover {
+  background-color: #14532d;
+}

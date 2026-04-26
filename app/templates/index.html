@@ -85,15 +85,25 @@
   </footer>
 
   <!-- Fondo oscuro -->
-<div id="modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:200; align-items:center; justify-content:center;">
-
-  <!-- Tarjeta del formulario -->
-  <div style="background:white; border-radius:20px; padding:32px; width:90%; max-width:380px;">
-    <h2>Iniciar Sesión</h2>
-    <input type="email" placeholder="Email" />
-    <input type="password" placeholder="Contraseña" />
-    <button>Entrar</button>
-    <button onclick="cerrarModal()">✕ Cerrar</button>
+<div id="modal" class="modal-overlay" style="display: none;">
+  
+  <div class="modal-content">
+    <button class="btn-close" onclick="cerrarModal()">✕</button>
+    <h2 class="modal-title">Bienvenido</h2>
+    
+    <div class="modal-form">
+      <div class="input-group">
+        <label>Correo electrónico</label>
+        <input type="email" placeholder="usuario@ejemplo.com" />
+      </div>
+      
+      <div class="input-group">
+        <label>Contraseña</label>
+        <input type="password" placeholder="••••••••" />
+      </div>
+      
+      <button class="btn-submit">Ingresar</button>
+    </div>
   </div>
 
 </div>
