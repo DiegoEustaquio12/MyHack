@@ -631,3 +631,15 @@
 .apoyo-card:hover .apoyo-img img {
   transform: scale(1.05);
 }
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.hero-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;      /* ← esto es clave */
+  object-position: center;
+}
