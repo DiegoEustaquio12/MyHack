@@ -20,6 +20,7 @@
     <div class="topbar-right">
       <button class="icon-btn" title="Buscar">🔍</button>
       <button class="icon-btn" title="Notificaciones">🔔</button>
+      <button onclick="cerrarSesion()">Cerrar sesión 🚪</button>
     </div>
   </div>
 
@@ -294,6 +295,10 @@
   </div>
   <script src="../static/mapa.js"></script>
   <script src="../static/menu.js"></script>
-
+  <script>
+  function cerrarSesion() {
+    window.location.href = "/";
+}
+</script>
 </body>
 </html>
