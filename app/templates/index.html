@@ -17,7 +17,7 @@
     
     <div class="nav-actions">
    
-      <button class="btn-primary onclick="abrirModal()">Iniciar Sesión</button>
+      <button class="btn-primary" onclick="abrirModal()">Iniciar Sesión</button>
     </div>
   </nav>
  
@@ -85,8 +85,8 @@
   </footer>
 
   <!-- Fondo oscuro -->
-<div id="modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:200; display:flex; align-items:center; justify-content:center;">
-  
+<div id="modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:200; align-items:center; justify-content:center;">
+
   <!-- Tarjeta del formulario -->
   <div style="background:white; border-radius:20px; padding:32px; width:90%; max-width:380px;">
     <h2>Iniciar Sesión</h2>
@@ -97,6 +97,8 @@
   </div>
 
 </div>
- 
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
 </body>
 </html>
