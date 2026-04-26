@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, render_template
 from .models import Municipio
 
 main = Blueprint("main", __name__)
@@ -6,4 +6,4 @@ main = Blueprint("main", __name__)
 
 @main.route("/")
 def inicio():
-    return "API funcionando"
+    return render_template("index.html")
