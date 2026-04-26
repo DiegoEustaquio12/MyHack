@@ -29,8 +29,7 @@
       <h1 class="hero-title">Protege tu cosecha<br>ante el <span>cambio climático</span></h1>
       <p class="hero-desc">Alertas tempranas, recomendaciones personalizadas y herramientas de adaptación para agricultores de Puebla.</p>
       <div class="hero-cta">
-        <button class="btn-hero btn-hero-primary">Registrarse</button>
-        
+          <button class="btn-hero btn-hero-primary" onclick="abrirModalRegistro()">Registrarse</button>
       </div>
     </div>
   </section>
@@ -99,7 +98,7 @@
       
       <div class="input-group">
         <label>Contraseña</label>
-        <input type="password" placeholder="••••••••" />
+        <input type="password" placeholder="********" />
       </div>
       
       <button class="btn-submit">Ingresar</button>
@@ -107,6 +106,36 @@
   </div>
 
 </div>
+
+
+<div id="modal-registro" class="modal-overlay" style="display: none;">
+  
+  <div class="modal-content">
+    <button class="btn-close" onclick="cerrarModalRegistro()">✕</button>
+    <h2 class="modal-title">Únete a AgroClimb</h2>
+    
+    <div class="modal-form">
+      <div class="input-group">
+        <label>Nombre completo</label>
+        <input type="text" placeholder="Ejemplo: Ana Huerta" />
+      </div>
+
+      <div class="input-group">
+        <label>Correo electrónico</label>
+        <input type="email" placeholder="usuario@ejemplo.com" />
+      </div>
+      
+      <div class="input-group">
+        <label>Contraseña</label>
+        <input type="password" placeholder="********" />
+      </div>
+      
+      <button class="btn-submit">Crear cuenta</button>
+    </div>
+  </div>
+
+</div>
+
 
 <script src="{{ url_for('static', filename='script.js') }}"></script>
 

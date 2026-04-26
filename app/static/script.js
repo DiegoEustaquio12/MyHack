@@ -1,15 +1,31 @@
-const modal = document.getElementById('modal');
+// Seleccionamos ambos modales
+const modalLogin = document.getElementById('modal');
+const modalRegistro = document.getElementById('modal-registro');
 
+// Funciones para Iniciar Sesión
 function abrirModal() {
-  modal.style.display = 'flex';
+  modalLogin.style.display = 'flex';
 }
 
 function cerrarModal() {
-  modal.style.display = 'none';
+  modalLogin.style.display = 'none';
 }
 
+// Funciones para Registrarse
+function abrirModalRegistro() {
+  modalRegistro.style.display = 'flex';
+}
+
+function cerrarModalRegistro() {
+  modalRegistro.style.display = 'none';
+}
+
+// Cerrar haciendo clic afuera (aplica para ambos)
 window.onclick = function(event) {
-  if (event.target == modal) {
+  if (event.target == modalLogin) {
     cerrarModal();
   }
-};
+  if (event.target == modalRegistro) {
+    cerrarModalRegistro();
+  }
+}
