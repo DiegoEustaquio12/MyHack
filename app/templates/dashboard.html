@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>AgroClimb — Mis Cultivos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link href="../static/dash.css" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="avatar">JL</div>
+      <span class="topbar-title">AgroClimb</span>
+    </div>
+    <div class="topbar-right">
+      <button class="icon-btn" title="Buscar">🔍</button>
+      <button class="icon-btn" title="Notificaciones">🔔</button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+
+    <!-- ===== SCREEN: MIS CULTIVOS ===== -->
+    <div id="screen-cultivos" class="screen active">
+      <div class="section-header">
+        <span class="section-label">🌱 Mis Cultivos</span>
+        <span class="section-count" id="cultivo-count">5 parcelas</span>
+      </div>
+
+      <!-- Botón agregar -->
+      <button class="add-btn" onclick="abrirModal()">
+        <div class="add-btn-icon">＋</div>
+        Agregar nuevo cultivo
+      </button>
+
+      <!-- Lista de cultivos -->
+      <div class="cultivos-list" id="cultivos-list">
+
+        <div class="cultivo-card riesgo-alto">
+          <div class="cultivo-icon-wrap alto">🌽</div>
+          <div class="cultivo-info">
+            <div class="cultivo-nombre">Maíz — Parcela Norte</div>
+            <div class="cultivo-alerta">⚠️ Alerta: sequía en 3 días</div>
+          </div>
+          <div class="cultivo-right">
+            <span class="riesgo-badge badge-alto">ALTO</span>
+            <span class="chevron">›</span>
+          </div>
+        </div>
+
+        <div class="cultivo-card riesgo-medio">
+          <div class="cultivo-icon-wrap medio">🌶️</div>
+          <div class="cultivo-info">
+            <div class="cultivo-nombre">Chile Poblano</div>
+            <div class="cultivo-alerta">🌧 Alerta: lluvia intensa en 7 días</div>
+          </div>
+          <div class="cultivo-right">
+            <span class="riesgo-badge badge-medio">MEDIO</span>
+            <span class="chevron">›</span>
+          </div>
+        </div>
+
+        <div class="cultivo-card riesgo-bajo">
+          <div class="cultivo-icon-wrap bajo">🥑</div>
+          <div class="cultivo-info">
+            <div class="cultivo-nombre">Aguacate — Parcela Sur</div>
+            <div class="cultivo-alerta">✅ Sin alertas esta semana</div>
+          </div>
+          <div class="cultivo-right">
+            <span class="riesgo-badge badge-bajo">BAJO</span>
+            <span class="chevron">›</span>
+          </div>
+        </div>
+
+        <div class="cultivo-card riesgo-bajo">
+          <div class="cultivo-icon-wrap bajo">🫘</div>
+          <div class="cultivo-info">
+            <div class="cultivo-nombre">Frijol Negro</div>
+            <div class="cultivo-alerta">✅ Condiciones favorables</div>
+          </div>
+          <div class="cultivo-right">
+            <span class="riesgo-badge badge-bajo">BAJO</span>
+            <span class="chevron">›</span>
+          </div>
+        </div>
+
+        <div class="cultivo-card riesgo-medio">
+          <div class="cultivo-icon-wrap medio">🌵</div>
+          <div class="cultivo-info">
+            <div class="cultivo-nombre">Nopal — Parcela Oriente</div>
+            <div class="cultivo-alerta">❄️ Alerta: helada en 10 días</div>
+          </div>
+          <div class="cultivo-right">
+            <span class="riesgo-badge badge-medio">MEDIO</span>
+            <span class="chevron">›</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ===== SCREEN: APOYOS ===== -->
+    <div id="screen-apoyos" class="screen">
+      <p class="screen-title">Apoyos de Gobierno</p>
+
+      <div class="apoyo-card">
+        <div class="apoyo-header">
+          <div class="apoyo-icon">💧</div>
+          <div>
+            <div class="apoyo-titulo">Tecnificación del Riego</div>
+            <div class="apoyo-org">SADER · Gobierno de Puebla</div>
+          </div>
+        </div>
+        <p class="apoyo-desc">Subsidio para instalar riego por goteo o aspersión. Cubre hasta el 70% del costo para productores de temporal en los 32 municipios participantes.</p>
+        <button class="apoyo-btn">Ver requisitos</button>
+      </div>
+
+      <div class="apoyo-card" style="animation-delay:0.08s">
+        <div class="apoyo-header">
+          <div class="apoyo-icon">☀️</div>
+          <div>
+            <div class="apoyo-titulo">Energía Solar para Bombeo</div>
+            <div class="apoyo-org">CONAGUA · Federal</div>
+          </div>
+        </div>
+        <p class="apoyo-desc">Instalación de paneles solares para sistemas de bombeo agrícola. Reduce hasta un 90% el costo de energía eléctrica en tu parcela.</p>
+        <button class="apoyo-btn">Ver requisitos</button>
+      </div>
+
+      <div class="apoyo-card" style="animation-delay:0.16s">
+        <div class="apoyo-header">
+          <div class="apoyo-icon">🛡️</div>
+          <div>
+            <div class="apoyo-titulo">Seguro Agrícola Catastrófico</div>
+            <div class="apoyo-org">AGROASEMEX · Federal</div>
+          </div>
+        </div>
+        <p class="apoyo-desc">Protección ante pérdidas por sequía, heladas, granizo e inundaciones. Sin costo directo para el productor en zonas de alta vulnerabilidad.</p>
+        <button class="apoyo-btn">Ver requisitos</button>
+      </div>
+
+      <div class="apoyo-card" style="animation-delay:0.24s">
+        <div class="apoyo-header">
+          <div class="apoyo-icon">🌱</div>
+          <div>
+            <div class="apoyo-titulo">Semillas Resistentes</div>
+            <div class="apoyo-org">INIFAP · SADER</div>
+          </div>
+        </div>
+        <p class="apoyo-desc">Distribución gratuita de variedades mejoradas de maíz, frijol y chile tolerantes a sequía y temperaturas extremas para el ciclo primavera-verano.</p>
+        <button class="apoyo-btn">Ver requisitos</button>
+      </div>
+    </div>
+
+    <!-- ===== SCREEN: PREGUNTAS ===== -->
+    <div id="screen-faq" class="screen">
+      <p class="screen-title">Preguntas Frecuentes</p>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span>¿Cómo se calcula el nivel de riesgo de mi cultivo?</span>
+          <span class="faq-arrow">⌄</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">El nivel de riesgo se calcula combinando datos de temperatura, humedad, precipitación y viento de estaciones cercanas a tu parcela, junto con el historial climático de tu zona. Se actualiza cada 24 horas.</div>
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span>¿Con cuánta anticipación llegan las alertas?</span>
+          <span class="faq-arrow">⌄</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Las alertas se emiten con un mínimo de 3 días de anticipación para eventos como sequías y heladas, y de 24 horas para lluvias intensas o granizo. Puedes configurar notificaciones en tu perfil.</div>
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span>¿Cuántas parcelas puedo registrar?</span>
+          <span class="faq-arrow">⌄</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">En la versión gratuita puedes registrar hasta 5 parcelas. Con una cuenta de productor verificada por SADER no hay límite de parcelas.</div>
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span>¿AgroClimb tiene costo?</span>
+          <span class="faq-arrow">⌄</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">La aplicación es completamente gratuita para productores de Puebla registrados. Es parte del programa de resiliencia climática del Gobierno del Estado.</div>
+        </div>
+      </div>
+
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-question">
+          <span>¿Cómo solicito un apoyo de gobierno?</span>
+          <span class="faq-arrow">⌄</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">Ve a la sección "Apoyos de Gobierno" en el menú inferior. Selecciona el programa de tu interés y sigue los pasos. Necesitarás tu CURP, RFC y comprobante de domicilio de la parcela.</div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button class="nav-item" id="nav-apoyos" onclick="cambiarScreen('apoyos')">
+      <span class="nav-icon">🏛️</span>
+      <span class="nav-label">Apoyos</span>
+    </button>
+    <button class="nav-item active" id="nav-cultivos" onclick="cambiarScreen('cultivos')">
+      <span class="nav-icon">🌱</span>
+      <span class="nav-label">Mis Cultivos</span>
+    </button>
+    <button class="nav-item" id="nav-faq" onclick="cambiarScreen('faq')">
+      <span class="nav-icon">❓</span>
+      <span class="nav-label">Preguntas</span>
+    </button>
+  </nav>
+
+  <!-- MODAL AGREGAR CULTIVO -->
+  <div class="modal-backdrop" id="modal" onclick="cerrarModalFuera(event)">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">Agregar Cultivo</div>
+
+      <div class="form-group">
+        <label class="form-label">Tipo de cultivo</label>
+        <select class="form-select" id="tipo-cultivo">
+          <option value="">Selecciona un cultivo...</option>
+          <option value="maiz">🌽 Maíz</option>
+          <option value="chile">🌶️ Chile Poblano</option>
+          <option value="frijol">🫘 Frijol</option>
+          <option value="aguacate">🥑 Aguacate</option>
+          <option value="nopal">🌵 Nopal</option>
+          <option value="amaranto">🌾 Amaranto</option>
+          <option value="jitomate">🍅 Jitomate</option>
+          <option value="papa">🥔 Papa</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Nombre de la parcela</label>
+        <input class="form-input" type="text" placeholder="Ej. Parcela Norte, Terreno La Loma..." id="nombre-parcela"/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Municipio</label>
+        <input class="form-input" type="text" placeholder="Ej. Tehuacán, Atlixco..." id="municipio"/>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
+        <button class="btn-save" onclick="guardarCultivo()">Guardar cultivo</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ── NAVEGACIÓN ──
+    function cambiarScreen(screen) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('screen-' + screen).classList.add('active');
+      document.getElementById('nav-' + screen).classList.add('active');
+    }
+
+    // ── FAQ ──
+    function toggleFaq(el) {
+      el.classList.toggle('open');
+    }
+
+    // ── MODAL ──
+    function abrirModal() {
+      document.getElementById('modal').classList.add('open');
+    }
+
+    function cerrarModal() {
+      document.getElementById('modal').classList.remove('open');
+    }
+
+    function cerrarModalFuera(e) {
+      if (e.target === document.getElementById('modal')) cerrarModal();
+    }
+
+    // Iconos por tipo de cultivo
+    const iconos = {
+      maiz: '🌽', chile: '🌶️', frijol: '🫘', aguacate: '🥑',
+      nopal: '🌵', amaranto: '🌾', jitomate: '🍅', papa: '🥔'
+    };
+
+    // ── AGREGAR CULTIVO ──
+    function guardarCultivo() {
+      const tipo   = document.getElementById('tipo-cultivo').value;
+      const nombre = document.getElementById('nombre-parcela').value.trim();
+      const muni   = document.getElementById('municipio').value.trim();
+
+      if (!tipo || !nombre) {
+        alert('Por favor llena el tipo de cultivo y el nombre de la parcela.');
+        return;
+      }
+
+      const icono = iconos[tipo] || '🌱';
+      const nombreLabel = nombre + (muni ? ` — ${muni}` : '');
+
+      const card = document.createElement('div');
+      card.className = 'cultivo-card riesgo-bajo';
+      card.innerHTML = `
+        <div class="cultivo-icon-wrap bajo">${icono}</div>
+        <div class="cultivo-info">
+          <div class="cultivo-nombre">${nombreLabel}</div>
+          <div class="cultivo-alerta">✅ Recién agregado — calculando riesgo...</div>
+        </div>
+        <div class="cultivo-right">
+          <span class="riesgo-badge badge-bajo">BAJO</span>
+          <span class="chevron">›</span>
+        </div>
+      `;
+
+      document.getElementById('cultivos-list').appendChild(card);
+
+      // Actualizar contador
+      const total = document.querySelectorAll('.cultivo-card').length;
+      document.getElementById('cultivo-count').textContent = total + ' parcelas';
+
+      // Limpiar y cerrar
+      document.getElementById('tipo-cultivo').value = '';
+      document.getElementById('nombre-parcela').value = '';
+      document.getElementById('municipio').value = '';
+      cerrarModal();
+    }
+  </script>
+
+</body>
+</html>
