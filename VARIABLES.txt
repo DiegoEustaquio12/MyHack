@@ -1,0 +1,332 @@
+================================================================================
+  MYHACK — INVENTARIO DE VARIABLES Y ESTRUCTURAS DE DATOS
+  Documentación de referencia rápida
+================================================================================
+
+FLUJO GENERAL
+─────────────
+buscar_coordenadas()  →  coords
+        ↓
+obtener_clima(lat, lon)  →  clima_raw
+        ↓
+calcular_etapa()             →  etapa
+calcular_desviaciones()      →  desv
+        ↓
+detectar_eventos()  →  eventos
+        ↓
+generar_salida_completa()  →  salida  ← lo que va al frontend
+
+
+================================================================================
+  1. clima.py
+================================================================================
+
+coords                                                                  [dict]
+  Resultado de buscar_coordenadas(nombre_ciudad).
+  Acceso:
+    coords['lat']       → float  Latitud
+    coords['lon']       → float  Longitud
+    coords['nombre']    → str    Nombre oficial de la ciudad
+    coords['region']    → str    Estado o provincia
+  Ejemplo:
+    {'lat': 18.46, 'lon': -97.39, 'nombre': 'Tehuacán', 'region': 'Puebla'}
+
+────────────────────────────────────────────────────────────────────────────────
+
+clima_raw                                                               [dict]
+  JSON crudo devuelto por Open-Meteo. Tiene dos bloques: current y daily.
+  Acceso:
+    clima_raw['current']   → dict  Datos del momento actual
+    clima_raw['daily']     → dict  Pronóstico 7 días (listas de 7 valores)
+  Ejemplo:
+    {'current': {...}, 'daily': {...}}
+
+────────────────────────────────────────────────────────────────────────────────
+
+clima_raw['current']['temperature_2m']                                [float]
+  Temperatura actual en grados Celsius.
+  Ejemplo: 22.4
+
+clima_raw['current']['relative_humidity_2m']                          [float]
+  Humedad relativa actual en porcentaje (0–100).
+  Ejemplo: 61.0
+
+clima_raw['current']['precipitation']                                 [float]
+  Precipitación actual en milímetros. 0.0 si no llueve.
+  Ejemplo: 0.0
+
+clima_raw['current']['wind_speed_10m']                                [float]
+  Velocidad del viento en km/h a 10 metros de altura.
+  Ejemplo: 14.2
+
+────────────────────────────────────────────────────────────────────────────────
+
+clima_raw['daily']['temperature_2m_max']                               [list]
+  Lista de 7 floats: temperatura máxima diaria pronosticada en °C.
+  Acceso:
+    clima_raw['daily']['temperature_2m_max'][0]   → día 1
+    clima_raw['daily']['temperature_2m_max'][6]   → día 7
+  Ejemplo: [32.1, 31.5, 33.0, 30.8, 29.5, 31.2, 32.8]
+
+clima_raw['daily']['temperature_2m_min']                               [list]
+  Lista de 7 floats: temperatura mínima diaria pronosticada en °C.
+  Ejemplo: [14.0, 13.5, 15.1, 12.8, 11.0, 13.5, 14.2]
+
+clima_raw['daily']['precipitation_sum']                                [list]
+  Lista de 7 floats: lluvia total acumulada por día en mm.
+  Ejemplo: [0.0, 2.5, 15.0, 0.0, 0.0, 4.1, 0.0]
+
+
+================================================================================
+  2. prediccion.py
+================================================================================
+
+etapa                                                                   [dict]
+  Resultado de calcular_etapa(fecha_siembra, dias_siembra_cosecha).
+  Acceso:
+    etapa['dias_transcurridos']  → int    Días desde la fecha de siembra
+    etapa['porcentaje']          → float  % de avance en el ciclo
+    etapa['etapa']               → str    Nombre de la etapa actual
+    etapa['es_critica']          → bool   True si porcentaje entre 40% y 80%
+  Valores posibles de etapa['etapa']:
+    'Germinación'   0–20%
+    'Crecimiento'  21–50%
+    'Floración'    51–80%  ← etapa crítica
+    'Maduración'   81–100%
+  Ejemplo:
+    {'dias_transcurridos': 98, 'porcentaje': 65.3,
+     'etapa': 'Floración', 'es_critica': True}
+
+────────────────────────────────────────────────────────────────────────────────
+
+desv                                                                    [dict]
+  Resultado de calcular_desviaciones(clima_actual, idoneo).
+  Guarda el clima actual y los deltas respecto a los rangos óptimos de la DB.
+  Acceso:
+    desv['temp']          → float  Temperatura actual (°C)
+    desv['humedad']       → float  Humedad actual (%)
+    desv['lluvia']        → float  Precipitación actual (mm)
+    desv['delta_calor']   → float  temp_actual − temp_max_c
+                                   Positivo = exceso de calor
+                                   Negativo = dentro del rango
+    desv['delta_frio']    → float  temp_min_c − temp_actual
+                                   Positivo = temperatura bajo el mínimo
+                                   Negativo = dentro del rango
+    desv['delta_humedad'] → float  humedad_actual − humedad_relativa_optima
+                                   Negativo = aire más seco de lo ideal
+  Ejemplo:
+    {'temp': 38.5, 'humedad': 28.0, 'lluvia': 0.0,
+     'delta_calor': 3.5, 'delta_frio': -28.5, 'delta_humedad': -32.0}
+
+────────────────────────────────────────────────────────────────────────────────
+
+eventos                                                                  [list]
+  Resultado de detectar_eventos(desv, etapa, temp_max_dia, temp_min_dia).
+  Lista de strings con todos los eventos detectados. Puede estar vacía.
+
+  Eventos simples (una variable):
+    'Evento Calor'       desv['delta_calor'] > 0
+    'Evento Frío'        desv['delta_frio'] > 0
+    'Déficit de Humedad' desv['delta_humedad'] < 0
+    'Exceso de Humedad'  humedad > 85%
+    'Evento Sequía'      lluvia == 0 y humedad < 40%
+    'Choque Térmico'     oscilación diaria > 20°C (requiere temp_max_dia/min_dia)
+    'Retraso de Ciclo'   Evento Frío + etapa Germinación o Crecimiento
+
+  Eventos combinados (alta prioridad):
+    'Estrés Hídrico'     Evento Calor + humedad < 40%
+    'Riesgo de Hongo'    temp > 22°C + Exceso de Humedad
+    'Aborto de Floración' etapa crítica + Evento Calor
+    'Cosecha en Riesgo'  etapa Floración + delta_calor > 0
+    'Asfixia Radicular'  lluvia > 20mm + humedad > 90%
+
+  Acceso:
+    'Estrés Hídrico' in eventos   → bool
+    len(eventos)                  → int   cantidad de eventos
+    eventos[0]                    → str   primer evento detectado
+  Ejemplo:
+    ['Estrés Hídrico', 'Aborto de Floración', 'Cosecha en Riesgo']
+
+
+================================================================================
+  3. soluciones.py
+================================================================================
+
+SOLUCIONES                                                              [dict]
+  Constante global. Clave = nombre del evento. Valor = dict con info técnica.
+  Acceso:
+    SOLUCIONES['Estrés Hídrico']['diagnostico']  → str
+    SOLUCIONES['Estrés Hídrico']['fisiologia']   → str
+    SOLUCIONES['Estrés Hídrico']['acciones']     → list de str
+    SOLUCIONES['Estrés Hídrico']['referencia']   → str (FAO/INIFAP/CIMMYT/SIAP)
+    SOLUCIONES['Estrés Hídrico']['urgencia_base']→ str ('Urgente','Alta','Media','Normal')
+
+  Claves disponibles:
+    'Evento Calor'        urgencia_base: Normal
+    'Evento Frío'         urgencia_base: Normal
+    'Déficit de Humedad'  urgencia_base: Normal
+    'Exceso de Humedad'   urgencia_base: Normal
+    'Evento Sequía'       urgencia_base: Alta
+    'Estrés Hídrico'      urgencia_base: Urgente   ref: FAO
+    'Riesgo de Hongo'     urgencia_base: Alta      ref: INIFAP
+    'Aborto de Floración' urgencia_base: Urgente   ref: CIMMYT
+    'Asfixia Radicular'   urgencia_base: Alta      ref: SIAP
+    'Cosecha en Riesgo'   urgencia_base: Alta      ref: CIMMYT
+    'Choque Térmico'      urgencia_base: Alta      ref: INIFAP
+    'Retraso de Ciclo'    urgencia_base: Media     ref: INIFAP
+
+────────────────────────────────────────────────────────────────────────────────
+
+PESO_URGENCIA                                                           [dict]
+  Constante global. Convierte urgencia a número para ordenar por gravedad.
+  Valores:
+    PESO_URGENCIA['Urgente'] → 4
+    PESO_URGENCIA['Alta']    → 3
+    PESO_URGENCIA['Media']   → 2
+    PESO_URGENCIA['Normal']  → 1
+
+URGENCIA_POR_NIVEL                                                      [dict]
+  Constante global. Convierte nivel de riesgo al texto que se muestra al usuario.
+  Valores:
+    URGENCIA_POR_NIVEL['Alto']  → 'Acción Inmediata (24h)'
+    URGENCIA_POR_NIVEL['Medio'] → 'Preparación (48–72h)'
+    URGENCIA_POR_NIVEL['Bajo']  → 'Monitoreo Preventivo'
+
+COLORES                                                                 [dict]
+  Constante global. Mapea nivel de riesgo a color para la UI.
+  Valores:
+    COLORES['Alto']  → 'rojo'
+    COLORES['Medio'] → 'amarillo'
+    COLORES['Bajo']  → 'verde'
+
+
+================================================================================
+  4. Salida final — generar_salida_completa()
+================================================================================
+
+salida                                                                  [dict]
+  Dict completo que devuelve generar_salida_completa().
+  Es el único objeto que necesitas pasar al frontend o al JSON de respuesta.
+  Contiene todos los demás datos adentro.
+
+  salida['municipio']     str    Nombre del municipio seleccionado
+  salida['cultivo']       str    Nombre del cultivo evaluado
+  salida['etapa']         str    Etapa actual: Germinación/Crecimiento/Floración/Maduración
+  salida['porcentaje']    float  % de avance en el ciclo (0–100)
+  salida['puntaje']       int    Puntaje acumulado del algoritmo
+                                   0–4  → Bajo
+                                   5–7  → Medio
+                                   8+   → Alto
+  salida['nivel_riesgo']  str    'Bajo' | 'Medio' | 'Alto'
+  salida['color']         str    'verde' | 'amarillo' | 'rojo'  (para CSS)
+  salida['urgencia']      str    Texto de urgencia listo para mostrar
+  salida['diagnostico']   str    Párrafo completo listo para mostrar al usuario
+  salida['eventos']       list   Lista de eventos detectados (strings)
+  salida['soluciones']    list   Lista de dicts ordenada por peso de urgencia
+  salida['clima']         dict   El dict desv completo (temp, humedad, lluvia, deltas)
+
+────────────────────────────────────────────────────────────────────────────────
+
+salida['soluciones']                                                     [list]
+  Cada elemento de la lista es un dict con esta estructura:
+    item['evento']      str   Nombre del evento
+    item['diagnostico'] str   Diagnóstico técnico del evento
+    item['fisiologia']  str   Explicación fisiológica del daño
+    item['acciones']    list  Lista de pasos de acción recomendados
+    item['referencia']  str   Fuente técnica (FAO / INIFAP / CIMMYT / SIAP)
+    item['urgencia']    str   Nivel de urgencia del evento
+    item['peso']        int   Número de peso (4=Urgente, 3=Alta, 2=Media, 1=Normal)
+
+  Acceso típico en un template:
+    salida['soluciones'][0]['evento']        → evento más urgente
+    salida['soluciones'][0]['acciones'][0]   → primera acción recomendada
+    for s in salida['soluciones']:           → iterar todos
+
+────────────────────────────────────────────────────────────────────────────────
+
+salida['clima']                                                         [dict]
+  El dict desv incluido en la salida final. Útil para mostrar datos en la UI.
+    salida['clima']['temp']          float  Temperatura actual (°C)
+    salida['clima']['humedad']       float  Humedad actual (%)
+    salida['clima']['lluvia']        float  Precipitación (mm)
+    salida['clima']['delta_calor']   float  Desviación de calor respecto al máximo
+    salida['clima']['delta_frio']    float  Desviación de frío respecto al mínimo
+    salida['clima']['delta_humedad'] float  Desviación de humedad respecto al óptimo
+
+
+================================================================================
+  5. Parámetros de entrada requeridos por cada función
+================================================================================
+
+buscar_coordenadas(nombre_ciudad)
+  nombre_ciudad  str  Ej: 'Tehuacán' o 'Tecamachalco, Puebla'
+  retorna: coords (dict)
+
+obtener_clima(lat, lon)
+  lat  float  Latitud
+  lon  float  Longitud
+  retorna: clima_raw (dict)
+
+calcular_etapa(fecha_siembra, dias_siembra_cosecha)
+  fecha_siembra           date  Objeto datetime.date
+  dias_siembra_cosecha    int   Columna de la tabla cultivos en la DB
+  retorna: etapa (dict)
+
+calcular_desviaciones(clima_actual, idoneo)
+  clima_actual  dict  clima_raw['current'] de Open-Meteo
+  idoneo        dict  Fila de la tabla idoneo en la DB
+                      Requiere: temp_max_c, temp_min_c, humedad_relativa
+  retorna: desv (dict)
+
+detectar_eventos(desv, etapa, temp_max_dia=None, temp_min_dia=None)
+  desv          dict   Resultado de calcular_desviaciones()
+  etapa         dict   Resultado de calcular_etapa()
+  temp_max_dia  float  Opcional: máxima del día (para detectar Choque Térmico)
+  temp_min_dia  float  Opcional: mínima del día (para detectar Choque Térmico)
+  retorna: eventos (list)
+
+generar_salida_completa(municipio, cultivo_nombre, etapa, desv, eventos, importancia_municipio)
+  municipio             str   Nombre del municipio
+  cultivo_nombre        str   Nombre del cultivo (de la DB)
+  etapa                 dict  Resultado de calcular_etapa()
+  desv                  dict  Resultado de calcular_desviaciones()
+  eventos               list  Resultado de detectar_eventos()
+  importancia_municipio str   'Alta' | 'Media' | 'Baja'  (de municipio_cultivos)
+  retorna: salida (dict)
+
+
+================================================================================
+  6. Tablas de la base de datos y sus columnas clave
+================================================================================
+
+cultivos
+  id                      int
+  nombre                  str   Ej: 'Maíz Grano'
+  tipo                    str   Ej: 'Anual'
+  siembra_inicio          str   Ej: 'Marzo'
+  cosecha_fin             str   Ej: 'Octubre'
+  dias_siembra_cosecha    int   ← usado en calcular_etapa()
+  municipios_clave_puebla str   Nombres separados por coma
+
+idoneo
+  id                 int
+  cultivo_id         int   FK → cultivos.id
+  temp_min_c         float ← usado en calcular_desviaciones()
+  temp_optima_c      float
+  temp_max_c         float ← usado en calcular_desviaciones()
+  riego_frecuencia   str
+  ph_min             float
+  ph_max             float
+  humedad_relativa   float ← usado en calcular_desviaciones()
+
+municipio_cultivos
+  id          int    ID del municipio
+  nombre      str    Nombre del municipio
+  cultivo_id  int    FK → cultivos.id
+  importancia str    'Alta' | 'Media' | 'Baja'  ← usado en generar_salida_completa()
+
+
+================================================================================
+  FIN DEL DOCUMENTO
+  MyHack — Sistema de predicción agrícola para Puebla
+================================================================================
