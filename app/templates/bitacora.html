@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <title>AgroClimb — Bitácora</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="../static/bit.css" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <button class="topbar-back" onclick="history.back()">‹</button>
+    <div class="topbar-info">
+      <div class="topbar-cultivo" id="nombre-cultivo">Maíz — Parcela Norte</div>
+      <div class="topbar-sub" id="fecha-hoy">Cargando...</div>
+    </div>
+  </div>
+
+  <main class="main">
+
+    <!-- SEMÁFORO -->
+    <div class="semaforo-section rojo" id="semaforo">
+      <div class="semaforo-luz" id="semaforo-luz">🔴</div>
+      <div class="semaforo-texto">
+        <div class="semaforo-estado" id="semaforo-estado">Riesgo ALTO</div>
+        <div class="semaforo-frase" id="semaforo-frase">Tu cultivo necesita atención hoy</div>
+      </div>
+    </div>
+
+    <!-- CONSEJO -->
+    <div class="consejo-box">
+      <div class="consejo-icono" id="consejo-icono">💡</div>
+      <div>
+        <div class="consejo-titulo">Qué hacer hoy</div>
+        <div class="consejo-texto" id="consejo-texto">Cargando consejo...</div>
+      </div>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="sec-title">📅 Los últimos 14 días</div>
+    <div class="timeline-scroll">
+      <div class="timeline-track" id="timeline-track"></div>
+    </div>
+
+    <!-- DATOS DEL DÍA -->
+    <div class="datos-grid" id="datos-grid">
+      <!-- se llena dinámicamente -->
+    </div>
+
+    <!-- EVENTOS -->
+    <div class="sec-title" style="margin-top:8px;">📋 Lo que has registrado</div>
+    <div class="eventos-list" id="eventos-list"></div>
+
+    <div class="fab-wrap">
+      <button class="add-btn" onclick="abrirModal()">
+        <span class="add-btn-icon">＋</span>
+        Anotar algo de hoy
+      </button>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button class="nav-item">
+      <span class="nav-icon">🏛️</span>
+      <span class="nav-label">Apoyos</span>
+    </button>
+    <button class="nav-item active">
+      <span class="nav-icon">🌱</span>
+      <span class="nav-label">Mis Cultivos</span>
+    </button>
+    <button class="nav-item">
+      <span class="nav-icon">❓</span>
+      <span class="nav-label">Preguntas</span>
+    </button>
+  </nav>
+
+  <!-- MODAL EVENTO -->
+  <div class="modal-backdrop" id="modal" onclick="cerrarFuera(event)">
+    <div class="modal-sheet">
+      <div class="modal-handle"></div>
+      <div class="modal-title">¿Qué quieres anotar?</div>
+
+      <div class="tipo-grid">
+        <button class="tipo-btn selected" data-tipo="riego" onclick="selTipo(this)">
+          <span class="tipo-btn-icon">💧</span>
+          <span class="tipo-btn-label">Riego</span>
+        </button>
+        <button class="tipo-btn" data-tipo="fertilizacion" onclick="selTipo(this)">
+          <span class="tipo-btn-icon">🌿</span>
+          <span class="tipo-btn-label">Fertilización</span>
+        </button>
+        <button class="tipo-btn" data-tipo="nota" onclick="selTipo(this)">
+          <span class="tipo-btn-icon">📝</span>
+          <span class="tipo-btn-label">Nota</span>
+        </button>
+        <button class="tipo-btn" data-tipo="alerta" onclick="selTipo(this)">
+          <span class="tipo-btn-icon">⚠️</span>
+          <span class="tipo-btn-label">Problema</span>
+        </button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">¿Qué pasó?</label>
+        <input class="form-input" id="evt-titulo" type="text" placeholder="Ej. Regué 45 minutos"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Más detalles (opcional)</label>
+        <textarea class="form-textarea" id="evt-desc" placeholder="Agrega lo que quieras recordar..."></textarea>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-cancel" onclick="cerrarModal()">Cancelar</button>
+        <button class="btn-save" onclick="guardarEvento()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../static/bita.js"></script>
+</body>
+</html>
