@@ -1,49 +1,70 @@
-    // ── NAVEGACIÓN ──
-    function cambiarScreen(screen) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      document.getElementById('screen-' + screen).classList.add('active');
-      document.getElementById('nav-' + screen).classList.add('active');
-    }
+// ── NAVEGACIÓN ──
+function cambiarScreen(screen) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('screen-' + screen).classList.add('active');
+  document.getElementById('nav-' + screen).classList.add('active');
+}
 
-    // ── FAQ ──
-    function toggleFaq(el) {
-      el.classList.toggle('open');
-    }
+// ── FAQ ──
+function toggleFaq(el) {
+  el.classList.toggle('open');
+}
 
-    // ── MODAL ──
-  
-      if (!tipo || !nombre) {
-        alert('Por favor llena el tipo de cultivo y el nombre de la parcela.');
-        return;
-      }
+// ── MODAL ──
+function abrirModal() {
+  document.getElementById('modal').classList.add('active');
+}
 
-      const icono = iconos[tipo] || '🌱';
-      const nombreLabel = nombre + (muni ? ` — ${muni}` : '');
+function cerrarModal() {
+  document.getElementById('modal').classList.remove('active');
+}
 
-      const card = document.createElement('div');
-      card.className = 'cultivo-card riesgo-bajo';
-      card.innerHTML = `
-        <div class="cultivo-icon-wrap bajo">${icono}</div>
-        <div class="cultivo-info">
-          <div class="cultivo-nombre">${nombreLabel}</div>
-          <div class="cultivo-alerta">✅ Recién agregado — calculando riesgo...</div>
-        </div>
-        <div class="cultivo-right">
-          <span class="riesgo-badge badge-bajo">BAJO</span>
-          <span class="chevron">›</span>
-        </div>
-      `;
+function cerrarModalFuera(event) {
+  if (event.target.id === 'modal') cerrarModal();
+}
 
-      document.getElementById('cultivos-list').appendChild(card);
+// ── GUARDAR CULTIVO ──
+const iconos = {
+  maiz: '🌽', chile: '🌶️', frijol: '🫘',
+  aguacate: '🥑', nopal: '🌵', amaranto: '🌾',
+  jitomate: '🍅', papa: '🥔'
+};
 
-      // Actualizar contador
-      const total = document.querySelectorAll('.cultivo-card').length;
-      document.getElementById('cultivo-count').textContent = total + ' parcelas';
+function guardarCultivo() {
+  const tipo   = document.getElementById('tipo-cultivo').value;
+  const nombre = document.getElementById('nombre-parcela').value.trim();
+  const muni   = document.getElementById('municipio').value.trim();
 
-      // Limpiar y cerrar
-      document.getElementById('tipo-cultivo').value = '';
-      document.getElementById('nombre-parcela').value = '';
-      document.getElementById('municipio').value = '';
-      cerrarModal();
-    
+  if (!tipo || !nombre) {
+    alert('Por favor llena el tipo de cultivo y el nombre de la parcela.');
+    return;
+  }
+
+  const icono = iconos[tipo] || '🌱';
+  const nombreLabel = nombre + (muni ? ` — ${muni}` : '');
+
+  const card = document.createElement('div');
+  card.className = 'cultivo-card riesgo-bajo';
+  card.innerHTML = `
+    <div class="cultivo-icon-wrap bajo">${icono}</div>
+    <div class="cultivo-info">
+      <div class="cultivo-nombre">${nombreLabel}</div>
+      <div class="cultivo-alerta">✅ Recién agregado — calculando riesgo...</div>
+    </div>
+    <div class="cultivo-right">
+      <span class="riesgo-badge badge-bajo">BAJO</span>
+      <span class="chevron">›</span>
+    </div>
+  `;
+
+  document.getElementById('cultivos-list').appendChild(card);
+
+  const total = document.querySelectorAll('.cultivo-card').length;
+  document.getElementById('cultivo-count').textContent = total + ' parcelas';
+
+  document.getElementById('tipo-cultivo').value = '';
+  document.getElementById('nombre-parcela').value = '';
+  document.getElementById('municipio').value = '';
+  cerrarModal();
+}
