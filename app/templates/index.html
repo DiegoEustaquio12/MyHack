@@ -17,7 +17,7 @@
     
     <div class="nav-actions">
    
-      <button class="btn-primary">Iniciar Sesión</button>
+      <button class="btn-primary onclick="abrirModal()">Iniciar Sesión</button>
     </div>
   </nav>
  
@@ -83,6 +83,20 @@
     <p>© 2025 AgroClimb — Puebla, México</p>
     <a href="#">Contacto: DelphiDevelopersCompany@gmail.com</a>
   </footer>
+
+  <!-- Fondo oscuro -->
+<div id="modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:200; display:flex; align-items:center; justify-content:center;">
+  
+  <!-- Tarjeta del formulario -->
+  <div style="background:white; border-radius:20px; padding:32px; width:90%; max-width:380px;">
+    <h2>Iniciar Sesión</h2>
+    <input type="email" placeholder="Email" />
+    <input type="password" placeholder="Contraseña" />
+    <button>Entrar</button>
+    <button onclick="cerrarModal()">✕ Cerrar</button>
+  </div>
+
+</div>
  
 </body>
 </html>
